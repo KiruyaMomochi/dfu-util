@@ -35,6 +35,7 @@ jobs:
           PKG_CONFIG_PATH=$PWD/build/lib/pkgconfig ./configure \
               --host=x86_64-w64-mingw32 --prefix=$PWD/build
           make
+          make LDFLAGS=-static
           make install
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
