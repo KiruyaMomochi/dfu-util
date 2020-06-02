@@ -20,6 +20,7 @@ jobs:
         run: |
           git clone https://github.com/libusb/libusb
           cd libusb
+          ./autogen.sh
           PKG_CONFIG_PATH=$PWD/../build/lib/pkgconfig ./configure \
               --host=x86_64-w64-mingw32 --prefix=$PWD/../build
           make
