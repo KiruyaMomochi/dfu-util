@@ -8,6 +8,8 @@ jobs:
     steps:
       - name: Enable deb-src sources
         run: |
+          pwd
+          ls
           sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
           sudo apt update
       - name: Install dependencies
