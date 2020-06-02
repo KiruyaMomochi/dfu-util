@@ -15,9 +15,16 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get build-dep libusb-1.0-0 dfu-util
-          sudo apt-get install mingw-w64 libusb-1.0-0-dev
-      - name: Check files
-        run: ls
+          sudo apt-get install mingw-w64
+      - name: Build libusb
+        run: |
+          git clone https://github.com/libusb/libusb
+          cd libusb
+          PKG_CONFIG_PATH=$PWD/../build/lib/pkgconfig ./configure \
+              --host=x86_64-w64-mingw32 --prefix=$PWD/../build
+          make
+          make install
+          cd ..
       - name: Generate configurations
         run: |
           ./autogen.sh
