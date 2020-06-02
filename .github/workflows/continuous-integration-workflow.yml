@@ -26,3 +26,8 @@ jobs:
               --host=x86_64-pc-mingw32 --prefix=$PWD/build
           make
           make install
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+            name: dfu-util
+            path: build/
