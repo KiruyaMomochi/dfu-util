@@ -1,0 +1,22 @@
+name: dfu-util
+on: push
+
+jobs:
+  build:
+    name: Building
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get build-dep libusb-1.0-0 dfu-util
+          sudo apt-get install mingw32
+      - name: Generate configurations
+        run: |
+          ./autogen.sh
+          mkdir -p build
+      - name: Build dfu-util
+        run: |
+          PKG_CONFIG_PATH=$PWD/build/lib/pkgconfig ./configure \
+              --host=i586-mingw32msvc --prefix=$PWD/build
+          make
+          make install
