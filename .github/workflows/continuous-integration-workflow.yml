@@ -7,7 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Enable deb-src sources
-        run: sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
+        run: |
+          sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
+          sudo apt update
       - name: Install dependencies
         run: |
           sudo apt-get build-dep libusb-1.0-0 dfu-util
