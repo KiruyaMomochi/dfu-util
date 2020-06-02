@@ -15,7 +15,9 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get build-dep libusb-1.0-0 dfu-util
-          sudo apt-get install mingw-w64
+          sudo apt-get install mingw-w64 libusb-1.0-0-dev
+      - name: Check files
+        run: ls
       - name: Generate configurations
         run: |
           ./autogen.sh
