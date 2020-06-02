@@ -3,7 +3,7 @@ on: push
 
 jobs:
   build:
-    name: Building
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Enable deb-src sources
@@ -13,7 +13,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get build-dep libusb-1.0-0 dfu-util
-          sudo apt-get install mingw32
+          sudo apt-get install mingw-w64
       - name: Generate configurations
         run: |
           ./autogen.sh
@@ -21,6 +21,6 @@ jobs:
       - name: Build dfu-util
         run: |
           PKG_CONFIG_PATH=$PWD/build/lib/pkgconfig ./configure \
-              --host=i586-mingw32msvc --prefix=$PWD/build
+              --host=x86_64-pc-mingw32 --prefix=$PWD/build
           make
           make install
