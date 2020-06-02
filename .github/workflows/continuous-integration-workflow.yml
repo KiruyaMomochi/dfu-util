@@ -23,7 +23,7 @@ jobs:
       - name: Build dfu-util
         run: |
           PKG_CONFIG_PATH=$PWD/build/lib/pkgconfig ./configure \
-              --host=x86_64-pc-mingw32 --prefix=$PWD/build
+              --host=x86_64-w64-mingw32 --prefix=$PWD/build
           make
           make install
       - name: Upload artifacts
