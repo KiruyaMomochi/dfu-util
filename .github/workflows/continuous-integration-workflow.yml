@@ -2,8 +2,8 @@ name: dfu-util
 on: push
 
 jobs:
-  build:
-    name: Build
+  build-windows:
+    name: Build Windows
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -36,11 +36,47 @@ jobs:
               --host=x86_64-w64-mingw32 --prefix=$PWD/build
           make
           make install
-          make clean
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+            name: dfu-util
+            path: build/bin/
+  build-windows-static:
+    name: Build Windows (Static)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Enable deb-src sources
+        run: |
+          sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
+          sudo apt update
+      - name: Install dependencies
+        run: |
+          sudo apt-get build-dep libusb-1.0-0 dfu-util
+          sudo apt-get install mingw-w64
+      - name: Build libusb
+        run: |
+          git clone https://github.com/libusb/libusb
+          cd libusb
+          ./autogen.sh
+          PKG_CONFIG_PATH=$PWD/../build/lib/pkgconfig ./configure \
+              --host=x86_64-w64-mingw32 --prefix=$PWD/../build
+          make
+          make install
+          cd ..
+      - name: Generate configurations
+        run: |
+          ./autogen.sh
+          mkdir -p build
+      - name: Build dfu-util
+        run: |
+          PKG_CONFIG_PATH=$PWD/build/lib/pkgconfig ./configure \
+              --host=x86_64-w64-mingw32 --prefix=$PWD/build
           make LDFLAGS=-static
           make install
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-            name: dfu-util
+            name: dfu-util-static
             path: build/bin/
