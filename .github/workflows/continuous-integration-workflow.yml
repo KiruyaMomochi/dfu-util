@@ -62,7 +62,7 @@ jobs:
           ./autogen.sh
           PKG_CONFIG_PATH=$PWD/../build/lib/pkgconfig ./configure \
               --host=x86_64-w64-mingw32 --prefix=$PWD/../build
-          make
+          make LDFLAGS=-static
           make install
           cd ..
       - name: Generate configurations
